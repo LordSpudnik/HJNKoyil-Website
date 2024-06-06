@@ -1,0 +1,174 @@
+@page "/CreateCommonTypeDtls/{TypeID:int}/{ID:int}"
+@inject Controllers.CommonMasterDtlController svcCommonMasterDtl
+@inject Controllers.CommonMasterController svcCommonMaster
+@inject AuthenticationStateProvider oAuth
+
+@inject NavigationManager NavManager
+<style>
+    .two-column {
+        display: flex;
+    }
+
+    .column {
+        flex: 0.5;
+        padding: 10px;
+        border: inset;
+    }
+    .divborder {
+        border:solid;
+        border-color:AppWorkspace;
+    
+    }
+
+    .whitecolor {
+        color: white;
+    }
+
+    .purplecolor {
+        background-color: #DA70D6;
+    }
+
+    .buttoneffect:hover {
+        background: #CF9FFF;
+        box-shadow: 0 0 5px #E0B0FF, 0 0 25px #E0B0FF, 0 0 50px #E0B0FF, 0 0 200px #E0B0FF
+    }
+</style>
+
+
+<div class="two-column">
+    <div class="column">
+        Message:
+    </div>
+    <div class="column">
+        <label>@sMessage</label>
+    </div>
+</div>
+
+<div class="divborder">
+    <EditForm Model="@oModel" class="divborder">
+        <div class="two-column">
+            <div class="column">
+                <label>ID </label>
+            </div>
+            <div class="column">
+                <label>@oModel.Id</label>
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>CommonMasterId</label>
+            </div>
+            <div class="column">
+                <label>@lstCommonMasters.Where(o=>o.Id==oModel.CommonMasterId).First().CommonText</label>
+@*                 <input id="oCommonMasterId" name="oCommonMasterId" @bind="oModel.CommonMasterId"> *@
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>CommonItem</label>
+            </div>
+            <div class="column">
+                <input id="oCommonItem" name="oCommonItem" @bind="oModel.CommonItem">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>IsActive</label>
+            </div>
+            <div class="column">
+                <input type="checkbox" id="oIsActive" name="oIsActive" @bind="oModel.IsActive">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>CreatedBy</label>
+            </div>
+            <div class="column">
+                <input id="oCreatedBy" name="oCreatedBy" @bind="oModel.CreatedBy">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>CreatedDate</label>
+            </div>
+            <div class="column">
+                <input id="oCreatedDate" name="oCreatedDate" @bind="oModel.CreatedDate">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>ModifiedBy</label>
+            </div>
+            <div class="column">
+                <input id="oModifiedBy" name="oModifiedBy" @bind="oModel.ModifiedBy">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>ModifiedDate</label>
+            </div>
+            <div class="column">
+                <input id="oModifiedDate" name="oModifiedDate" @bind="oModel.ModifiedDate">
+            </div>
+        </div>
+        <p style="padding:10px;margin-top:20px;clear:both">
+            <button type="submit" @onclick="HandleValidSubmit" class="purplecolor whitecolor buttoneffect">Submit</button>
+        </p>
+    </EditForm>
+</div>
+@code
+{
+    [Parameter]
+    public int ID { get; set; }
+    [Parameter]
+    public int TypeID { get; set; }
+
+    private IList<HJNKoyil.Models.CommonMaster> lstCommonMasters;
+
+    private HJNKoyil.Models.CommonMasterDtl? oModel;
+
+    private string sMessage = "";
+    private string sUserName = "";
+
+    private void HandleValidSubmit()
+    {
+        sMessage = "";
+        try
+        {
+            if (oModel.CommonItem == null)
+                sMessage = "Common Item Text cannot be null";
+            else
+            {
+                if (oModel.Id == 0)
+                {
+                    oModel.CreatedBy = sUserName;
+                    oModel.ModifiedBy = sUserName;
+                }
+                else
+                    oModel.ModifiedBy = sUserName;
+                svcCommonMasterDtl.Create(oModel);
+                sMessage = "Saved Successfully";
+            }
+
+        }
+        catch (Exception ex)
+        {
+            sMessage = ex.Message;
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        sMessage = "";
+        oModel = new Models.CommonMasterDtl();
+
+    //     var authState = await oAuth.GetAuthenticationStateAsync();
+    //     sUserName = authState.User.Identity?.Name;
+
+    //     oModel = svcCommonMasterDtl.Details(ID);
+    //     lstCommonMasters = svcCommonMaster.List().ToList();
+    //     if (oModel.Id ==0)
+    //     {
+    //         oModel.CommonMasterId = TypeID;
+    //     }
+    }
+}

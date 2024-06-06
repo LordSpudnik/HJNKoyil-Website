@@ -1,0 +1,138 @@
+@page "/DonationList"
+@inject HJNKoyil.Controllers.DonationController svcDonation
+@inject NavigationManager oNavManager
+
+<h2> List </h2>
+<p>
+    <button class="nav-item" @onclick="()=>Create(0)">New Customer</button>
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            Id
+        </th>
+        <th>
+            DonatedBy
+        </th>
+        <th>
+            AmountDonated
+        </th>
+        <th>
+            DonationType
+        </th>
+        <th>
+            ReferenceInfo
+        </th>
+        <th>
+            DonatedDate
+        </th>
+        <th>
+            Comments
+        </th>
+        <th>
+            IsActive
+        </th>
+        <th>
+            CollectedBy
+        </th>
+        <th>
+            CreatedBy
+        </th>
+        <th>
+            CreatedDate
+        </th>
+        <th>
+            ModifiedBy
+        </th>
+        <th>
+            ModifiedDate
+        </th>
+
+    </tr>
+
+    @foreach (var oItem in oModel)
+    {
+        <tr>
+            <td>
+                <button @onclick="()=>Create(oItem.Id)">Edit</button>
+            </td>
+            <td>
+
+                @oItem.Id
+            </td>
+            <td>
+
+                @oItem.DonatedBy
+            </td>
+            <td>
+
+                @oItem.AmountDonated
+            </td>
+            <td>
+
+                @oItem.DonationType
+            </td>
+            <td>
+
+                @oItem.ReferenceInfo
+            </td>
+            <td>
+
+                @oItem.DonatedDate
+            </td>
+            <td>
+
+                @oItem.Comments
+            </td>
+            <td>
+
+                @oItem.IsActive
+            </td>
+            <td>
+
+                @oItem.CollectedBy
+            </td>
+            <td>
+
+                @oItem.CreatedBy
+            </td>
+            <td>
+
+                @oItem.CreatedDate
+            </td>
+            <td>
+
+                @oItem.ModifiedBy
+            </td>
+            <td>
+
+                @oItem.ModifiedDate
+            </td>
+        </tr>
+    }
+</table>
+
+
+
+@code
+{
+    [Parameter]
+    public string ID { get; set; }
+    List<HJNKoyil.Models.Donation> oModel;
+
+
+    private void Create(int vId)
+    {
+        //put your code here
+        oNavManager.NavigateTo("/CreateDonation/" + vId.ToString());
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        oModel = new List<Models.Donation>();
+        //oModel = svcDonation.List().ToList();
+    }
+
+
+}

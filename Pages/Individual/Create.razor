@@ -1,0 +1,223 @@
+@page "/CreateIndividual/{ID:int}"
+
+@inject Controllers.IndividualController svcIndividual
+@inject Controllers.vwCommonMasterDtlController svcRole
+
+
+@inject NavigationManager oNavManager
+
+<style>
+    .two-column {
+        display: flex
+    }
+
+    .column {
+        flex: 0.5;
+        padding: 10px;
+        border: inset
+    }
+
+    .divborder {
+        border: 1px solid #6F8FAF
+    }
+
+    .whitecolor {
+        color: white
+    }
+
+    .purplecolor {
+        background-color: #DA70D6
+    }
+
+    .buttoneffect:hover {
+        background: #CF9FFF;
+        box-shadow: 0 0 5px #E0B0FF, 0 0 25px #E0B0FF, 0 0 50px #E0B0FF, 0 0 200px #E0B0FF
+    }
+
+    .NavButton {
+        color: white;
+        background: #CF9FFF
+    }
+
+    .space {
+        display: flex;
+        justify-content: space-between
+    }
+</style>
+
+
+<div class="two-column">
+    <div class="column">
+        Message:
+    </div>
+    <div class="column">
+        <label>@sMessage</label>
+    </div>
+</div>
+
+<div class="divborder">
+    <EditForm Model="@oModel" class="divborder">
+        <div class="two-column">
+            <div class="column">
+                <label>ID</label>
+            </div>
+            <div class="column">
+                <input id="oID" name="oID" @bind="oModel.Id">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>FullName</label>
+            </div>
+            <div class="column">
+                <input id="oFullName" name="oFullName" @bind="oModel.FullName">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>MobileNumber</label>
+            </div>
+            <div class="column">
+                <input id="oMobileNumber" name="oMobileNumber" @bind="oModel.MobileNumber">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>Address1</label>
+            </div>
+            <div class="column">
+                <input id="oAddress1" name="oAddress1" @bind="oModel.Address1">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>Address2</label>
+            </div>
+            <div class="column">
+                <input id="oAddress2" name="oAddress2" @bind="oModel.Address2">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>Address3</label>
+            </div>
+            <div class="column">
+                <input id="oAddress3" name="oAddress3" @bind="oModel.Address3">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>City</label>
+            </div>
+            <div class="column">
+                <input id="oCity" name="oCity" @bind="oModel.City">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>State</label>
+            </div>
+            <div class="column">
+                <input id="oState" name="oState" @bind="oModel.State">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>PinCode</label>
+            </div>
+            <div class="column">
+                <input id="oPinCode" name="oPinCode" @bind="oModel.PinCode">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>IndividualRole</label>
+            </div>
+            <div class="column">
+                <input id="oIndividualRole" name="oIndividualRole" @bind="oModel.IndividualRole">
+                @* <InputSelect @bind-Value="@mRole">
+                    @foreach (var oItem in oList)
+                    {
+                        <option value="@oItem.Id">@oItem.CommonItem</option>
+                    }
+                </InputSelect> *@
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>ASPNetUserName</label>
+            </div>
+            <div class="column">
+           @*   <input id="oASPNetUserName" name="oASPNetUserName" @bind="oModel.AspnetUserName"> *@
+                <label>oModel.AspnetUserName</label>
+    @*          <InputSelect @bind-Value="@sAppUser">
+                @foreach (var oItem in oList1)
+                {
+                    <option value="@oItem.Id">@oItem.NormalizedUserName</option>
+                }
+                </InputSelect>
+     *@
+            </div>
+        </div>
+        <div align="center">
+            <p style="padding:10px;margin-top:20px;clear:both">
+                <button type="submit" @onclick="HandleValidSubmit" class="purplecolor whitecolor buttoneffect">Submit</button>
+            </p>
+        </div>
+        <div class="space">
+            <p style="padding:10px;margin-top:20px;clear:both">
+                <button type="button" class="NavButton"><a href="/DonationList" style="color: white; text-decoration: none;"> Donations </a></button>
+            </p>
+            <p style="padding:10px;margin-top:20px;clear:both">
+                <button type="button" class="NavButton"><a href="/ExpenseList" style="color: white; text-decoration: none;"> Expenses </a></button>
+            </p>
+        </div>
+    </EditForm>
+</div>
+@code {
+    [Parameter]
+    public int ID { get; set; }
+
+    private HJNKoyil.Models.Individual? oModel;
+    private int mRole;
+    private string sAppUser;
+
+    private string sMessage = "";
+    private IList<HJNKoyil.Models.VwCommonMasterDtl> oList;
+    private IList<HJNKoyil.Models.vwAppUsers> oList1;
+
+    private void HandleValidSubmit()
+    {
+        //put your code here
+
+        sMessage = "";
+        try
+        {
+            if (oModel.Address1 == null || oModel.MobileNumber == null || oModel.FullName == null)
+                sMessage = "Address Line 1, Mobile Number or Name cannot be null";
+            else
+            {
+                oModel.IndividualRole = mRole;
+                svcIndividual.Create(oModel);
+                sMessage = "Saved Successfully";
+            }
+        }
+        catch (Exception ex)
+        {
+            sMessage = ex.Message;
+        }
+
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        //oModel = service
+
+        sMessage = "";
+        oModel = new Models.Individual();
+
+        // oList = svcRole.List(2).ToList();
+        // oModel = svcIndividual.Details(ID);
+        // if (ID != 0)
+        //     mRole = (int)oModel.IndividualRole;
+    }
+}

@@ -1,0 +1,117 @@
+@page "/CommonMasterDtlList/{TypeID:int}"
+@page "/CommonMasterDtlList"
+@inject NavigationManager oNavManager
+
+@inject HJNKoyil.Controllers.CommonMasterDtlController svcCommonMasterDtl
+
+<style>
+    .two-column {
+        display: flex;
+    }
+
+    .column {
+        flex: 0.5;
+        padding: 10px;
+        border: inset;
+    }
+
+    .divborder {
+        border: solid;
+        border-color: AppWorkspace;
+    }
+</style>
+
+<h2> Common Master List </h2>
+<p>
+    <button class="nav-item" @onclick="()=>Create(0)">Create</button>
+</p>
+<table style="border:solid">
+    <tr style="border:solid">
+        <th></th>
+        <th>
+            Id
+        </th>
+        <th>
+            CommonMasterId
+        </th>
+        <th>
+            CommonItem
+        </th>
+        <th>
+            IsActive
+        </th>
+        <th>
+            CreatedBy
+        </th>
+        <th>
+            CreatedDate
+        </th>
+        <th>
+            ModifiedBy
+        </th>
+        <th>
+            ModifiedDate
+        </th>
+
+    </tr>
+
+    @foreach (var oItem in oModel)
+    {
+        <tr style="border:solid">
+            <td >
+                <button @onclick="()=>Create(oItem.Id)">Edit</button>
+            </td>
+            <td>
+
+                @oItem.Id
+            </td>
+            <td>
+                @oItem.CommonMasterId
+            </td>
+            <td>
+
+                @oItem.CommonItem
+            </td>
+            <td>
+
+                @oItem.IsActive
+            </td>
+            <td>
+
+                @oItem.CreatedBy
+            </td>
+            <td>
+
+                @oItem.CreatedDate
+            </td>
+            <td>
+
+                @oItem.ModifiedBy
+            </td>
+            <td>
+
+                @oItem.ModifiedDate
+            </td>
+        </tr>
+    }
+</table>
+
+
+
+@code
+{
+    [Parameter]
+    public int TypeID { get; set; }
+    List<HJNKoyil.Models.CommonMasterDtl> oModel;
+    private void Create(int vId)
+    {
+        //put your code here
+        oNavManager.NavigateTo("/CreateCommonTypeDtls/" + TypeID.ToString() + "/" + vId.ToString());
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        oModel = new List<Models.CommonMasterDtl>();
+        //oModel = svcCommonMasterDtl.List(TypeID).ToList();
+    }
+}

@@ -1,0 +1,97 @@
+@page "/CommonMasterList"
+@inject HJNKoyil.Controllers.CommonMasterController svcCommonMaster
+@inject NavigationManager oNavManager
+
+<h2> List </h2>
+<p>
+    <button class="nav-item" @onclick="()=>Create(0)">Create</button>
+</p>
+<table style="border-block-color:aquamarine">
+    <tr>
+        <th></th>
+        <th>
+            Id
+        </th>
+        <th>
+            CommonText
+        </th>
+        <th>
+            IsActive
+        </th>
+        <th>
+            CreatedBy
+        </th>
+        <th>
+            CreatedDate
+        </th>
+        <th>
+            ModifiedBy
+        </th>
+        <th>
+            ModifiedDate
+        </th>
+
+    </tr>
+
+    @foreach (var oItem in oModel)
+    {
+        <tr>
+            <td>
+                <button @onclick="()=>Create(oItem.Id)">Edit</button>
+                <button @onclick="()=>Details(oItem.Id)">Items</button>
+            </td>
+            <td>
+                @oItem.Id
+            </td>
+            <td>
+                @oItem.CommonText
+            </td>
+            <td>
+
+                @oItem.IsActive
+            </td>
+            <td>
+
+                @oItem.CreatedBy
+            </td>
+            <td>
+
+                @oItem.CreatedDate
+            </td>
+            <td>
+
+                @oItem.ModifiedBy
+            </td>
+            <td>
+
+                @oItem.ModifiedDate
+            </td>
+        </tr>
+    }
+</table>
+
+
+
+@code
+{
+    [Parameter]
+    public string ID { get; set; }
+    List<HJNKoyil.Models.CommonMaster> oModel;
+    private void Create(int vId)
+    {
+        //put your code here
+        oNavManager.NavigateTo("/CreateCommonTypes/" + vId.ToString());
+    }
+
+    private void Details(int vId)
+    {
+        //put your code here
+        oNavManager.NavigateTo("/CommonMasterDtlList/" + vId.ToString());
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        oModel = new List<Models.CommonMaster>();
+        //oModel = svcCommonMaster.List().ToList();
+    }
+}

@@ -1,0 +1,257 @@
+@page "/CreateDonation/{ID:int}"
+
+@inject Controllers.DonationController svcDonation
+@inject Controllers.vwCommonMasterDtlController svcDonationTypes
+@* @inject Controllers.vwAppUserController svcVwAppUser *@
+@inject Controllers.IndividualController svcIndividuals
+
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider oAuth
+
+<style>
+    .two-column {
+        display: flex
+    }
+
+    .column {
+        flex: 0.5;
+        padding: 10px;
+        border: inset
+    }
+
+    .divborder {
+        border: 1px solid #6F8FAF
+    }
+
+    .whitecolor {
+        color: white
+    }
+
+    .purplecolor {
+        background-color: #DA70D6
+    }
+
+    .buttoneffect:hover {
+        background: #CF9FFF;
+        box-shadow: 0 0 5px #E0B0FF, 0 0 25px #E0B0FF, 0 0 50px #E0B0FF, 0 0 200px #E0B0FF
+    }
+</style>
+
+
+<div class="two-column">
+    <div class="column">
+        Message @sUserName :
+    </div>
+    <div class="column">
+        <label>@sMessage</label>
+    </div>
+</div>
+
+<div class="divborder">
+    <EditForm Model="@oModel" class="divborder">
+        <div class="two-column">
+            <div class="column">
+                <label>ID</label>
+            </div>
+            <div class="column">
+                <label>@oModel.Id</label>
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>Donated By</label>
+            </div>
+            <div class="column">
+                @* <InputSelect @bind-Value="@sIndividual">
+                    @foreach (var oItem in oListIndividuals)
+                    {
+                        <option value="@oItem.Id">@oItem.FullName</option>
+                    }
+                </InputSelect> *@
+
+                <input id="oDonatedBy" name="oDonatedBy" @bind="oModel.DonatedBy">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>AmountDonated</label>
+            </div>
+            <div class="column">
+                <input id="oAmountDonated" name="oAmountDonated" @bind="oModel.AmountDonated">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>DonationType</label>
+            </div>
+            <div class="column">
+                
+                <input id="oDonationType" name="oDonationType" @bind="oModel.DonationType">
+
+                @* <InputSelect @bind-Value="@mDonationType">
+                    @foreach (var oItem in oList)
+                    {
+                        <option value="@oItem.Id">@oItem.CommonItem</option>
+                    }
+                </InputSelect> *@
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>ReferenceInfo</label>
+            </div>
+            <div class="column">
+                <input id="oReferenceInfo" name="oReferenceInfo" @bind="oModel.ReferenceInfo">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>DonatedDate</label>
+            </div>
+            <div class="column">
+                <input type="datetime-local" id="oDonatedDate" name="oDonatedDate" @bind="oModel.DonatedDate">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>Comments</label>
+            </div>
+            <div class="column">
+                <input id="oComments" name="oComments" @bind="oModel.Comments">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>IsActive</label>
+            </div>
+            <div class="column">
+                <input type="checkbox" id="oIsActive" name="oIsActive" @bind="oModel.IsActive">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>CollectedBy</label>
+            </div>
+            <div class="column">
+                @* <InputSelect @bind-Value="@sCollectedBy">
+                    @foreach (var oItem in oListIndividuals)
+                    {
+                        <option value="@oItem.Id">@oItem.FullName</option>
+                    }
+                </InputSelect> *@
+
+                <input id="oCollectedBy" name="oCollectedBy" @bind="oModel.CollectedBy">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>CreatedBy</label>
+            </div>
+            <div class="column">
+                <label>@oModel.CreatedBy</label>
+@*              <input id="oCreatedBy" name="oCreatedBy" @bind="oModel.CreatedBy"> *@
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>CreatedDate</label>
+            </div>
+            <div class="column">
+                <label>@oModel.CreatedDate</label>
+@*              <input type="datetime-local" id="oCreatedDate" name="oCreatedDate" @bind="oModel.CreatedDate"> *@
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>ModifiedBy</label>
+            </div>
+            <div class="column">
+                <label>@oModel.ModifiedBy</label>
+@*              <input id="oModifiedBy" name="oModifiedBy" @bind="oModel.ModifiedBy"> *@
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>ModifiedDate</label>
+            </div>
+            <div class="column">
+                <label>@oModel.ModifiedDate</label>
+@*              <input type="datetime-local" id="oModifiedDate" name="oModifiedDate" @bind="oModel.ModifiedDate"> *@
+            </div>
+        </div>
+        <div align="center">
+            <p style="padding:10px;margin-top:20px;clear:both">
+                <button type="submit" @onclick="HandleValidSubmit" class="purplecolor whitecolor buttoneffect">Submit</button>
+            </p>
+        </div>
+    </EditForm>
+</div>
+@code
+{
+    [Parameter]
+    public int ID { get; set; }
+
+    private HJNKoyil.Models.Donation? oModel;
+    private IList<HJNKoyil.Models.VwCommonMasterDtl> oList;
+    private IList<HJNKoyil.Models.vwAppUsers> oListUsers;
+    private IList<HJNKoyil.Models.Individual> oListIndividuals;
+
+    private int mDonationType;
+    private int sCollectedBy;
+    private int sIndividual;
+
+    private string sMessage = "";
+    private string sUserName = "";
+
+    private void HandleValidSubmit()
+    {
+        //put your code here
+        sMessage = "";
+        try
+        {
+            oModel.DonationType = mDonationType;
+            oModel.DonatedBy = sIndividual;
+            oModel.CollectedBy = sCollectedBy;
+
+            if (oModel.DonatedBy == null || oModel.AmountDonated == null || oModel.DonationType == null)
+                sMessage = "Donated By or Amount Donated or Donation Type cannot be null";
+            else
+            {
+                if (oModel.Id == 0)
+                {
+                    oModel.CreatedBy = sUserName;
+                    oModel.ModifiedBy = sUserName;
+                }
+                else
+                    oModel.ModifiedBy = sUserName;
+                svcDonation.Create(oModel);
+                sMessage = "Saved Successfully";
+            }
+        }
+        catch (Exception ex)
+        {
+            sMessage = ex.Message;
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        //oModel = service
+        sMessage = "";
+        oModel = new Models.Donation();
+
+        // var authState = await oAuth.GetAuthenticationStateAsync();
+        // sUserName = authState.User.Identity?.Name;
+        // oListUsers = svcVwAppUser.GetUsers().ToList();
+        // oList = svcDonationTypes.List(3).ToList();
+        // oListIndividuals = svcIndividuals.List().ToList();
+
+        // oModel = svcDonation.Details(ID);
+        // if (ID != 0)
+        // {
+        //     mDonationType = (int)oModel.DonationType;
+        //     sIndividual = (int)oModel.DonatedBy;
+        //     sCollectedBy = (int)oModel.CollectedBy;
+        // }
+
+    }
+}

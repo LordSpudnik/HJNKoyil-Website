@@ -1,0 +1,93 @@
+@page "/vwcommonmasterdtllist"
+@inject HJNKoyil.Controllers.vwCommonMasterDtlController svcCommonMasterDtl
+@inject NavigationManager oNavManager
+
+<h2> List </h2>
+<p>
+    <button class="nav-item" @onclick="()=>Create(0)"> Create  </button>
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            CommonMasterId
+        </th>
+        <th>
+            CommonMaster
+        </th>
+        <th>
+            Id
+        </th>
+        <th>
+            CommonItem
+        </th>
+        <th>
+            IsActive
+        </th>
+        <th>
+            ModifiedDate
+        </th>
+        <th>
+            ModifiedBy
+        </th>
+
+    </tr>
+
+    @foreach (var oItem in oModel)
+    {
+        <tr>
+            <td>
+                <button @onclick="()=>Create(oItem.Id)">Edit</button>
+            </td>
+            <td>
+
+                @oItem.CommonMasterId
+            </td>
+            <td>
+
+                @oItem.CommonText
+            </td>
+            <td>
+
+                @oItem.Id
+            </td>
+            <td>
+
+                @oItem.CommonItem
+            </td>
+            <td>
+
+                @oItem.IsActive
+            </td>
+            <td>
+
+                @oItem.ModifiedDate
+            </td>
+            <td>
+
+                @oItem.ModifiedBy
+            </td>
+        </tr>
+    }
+</table>
+
+
+
+@code
+{
+    [Parameter]
+    public string ID { get; set; }
+    List<HJNKoyil.Models.VwCommonMasterDtl> oModel;
+
+    private void Create(int vId)
+    {
+        //put your code here
+        //NavManager.NavigateTo("/.../Create/" + pid.ToString() + "/" + vId.ToString());
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        oModel = new List<Models.VwCommonMasterDtl>();
+        //oModel = svcCommonMasterDtl.List().ToList();
+    }
+}

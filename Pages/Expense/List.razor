@@ -1,0 +1,128 @@
+@page "/ExpenseList"
+@inject HJNKoyil.Controllers.ExpenseController svcExpense
+@inject NavigationManager oNavManager
+
+<h2> List </h2>
+<p>
+    <button class="nav-item" @onclick="()=>Create(0)">New Customer</button>
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            Id
+        </th>
+        <th>
+            ServiceProviderId
+        </th>
+        <th>
+            Amount
+        </th>
+        <th>
+            Comments
+        </th>
+        <th>
+            ExpenseType
+        </th>
+        <th>
+            IsActive
+        </th>
+        <th>
+            CreatedBy
+        </th>
+        <th>
+            CreatedDate
+        </th>
+        <th>
+            ModifiedBy
+        </th>
+        <th>
+            ModifiedDate
+        </th>
+        <th>
+            PaidBy
+        </th>
+        <th>
+            ExpenseDate
+        </th>
+
+    </tr>
+
+    @foreach (var oItem in oModel)
+    {
+        <tr>
+            <td>
+                <button @onclick="()=>Create(oItem.Id)">Edit</button>
+            </td>
+            <td>
+
+                @oItem.Id
+            </td>
+            <td>
+
+                @oItem.ServiceProviderId
+            </td>
+            <td>
+
+                @oItem.Amount
+            </td>
+            <td>
+
+                @oItem.Comments
+            </td>
+            <td>
+
+                @oItem.ExpenseType
+            </td>
+            <td>
+
+                @oItem.IsActive
+            </td>
+            <td>
+
+                @oItem.CreatedBy
+            </td>
+            <td>
+
+                @oItem.CreatedDate
+            </td>
+            <td>
+
+                @oItem.ModifiedBy
+            </td>
+            <td>
+
+                @oItem.ModifiedDate
+            </td>
+            <td>
+
+                @oItem.PaidBy
+            </td>
+            <td>
+                
+                @oItem.ExpenseDate
+            </td>
+        </tr>
+    }
+</table>
+
+
+
+@code
+{
+    [Parameter]
+    public string ID { get; set; }
+    List<HJNKoyil.Models.Expense> oModel;
+
+    private void Create(int vId)
+    {
+        //put your code here
+        oNavManager.NavigateTo("/CreateExpense/" + vId.ToString());
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        oModel = new List<Models.Expense>();
+        //oModel = svcExpense.List().ToList();
+    }
+}

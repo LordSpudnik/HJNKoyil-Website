@@ -1,0 +1,248 @@
+@page "/CreateExpense/{ID:int}"
+
+@inject Controllers.ExpenseController svcExpense
+
+@inject Controllers.vwCommonMasterDtlController svcExpenseTypes
+@* @inject Controllers.vwAppUserController svcVwAppUser *@
+@inject Controllers.IndividualController svcIndividuals
+
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider oAuth
+
+<style>
+    .two-column {
+        display: flex
+    }
+
+    .column {
+        flex: 0.5;
+        padding: 10px;
+        border: inset
+    }
+
+    .divborder {
+        border: 1px solid #6F8FAF
+    }
+
+    .whitecolor {
+        color: white
+    }
+
+    .purplecolor {
+        background-color: #DA70D6
+    }
+
+    .buttoneffect:hover {
+        background: #CF9FFF;
+        box-shadow: 0 0 5px #E0B0FF, 0 0 25px #E0B0FF, 0 0 50px #E0B0FF, 0 0 200px #E0B0FF
+    }
+</style>
+
+<div class="two-column">
+    <div class="column">
+        Message:
+    </div>
+    <div class="column">
+        <label>@sMessage</label>
+    </div>
+</div>
+
+<div class="divborder">
+    <EditForm Model="@oModel" class="divborder">
+        <div class="two-column">
+            <div class="column">
+                <label>ID</label>
+            </div>
+            <div class="column">
+                <label>@oModel.Id</label>
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>Paid To</label>
+            </div>
+            <div class="column">
+                <input id="oPaidTo" name="oPaidTo" @bind="oModel.ServiceProviderId">
+                @* <InputSelect @bind-Value="@sIndividual">
+                    @foreach (var oItem in oListIndividuals)
+                    {
+                        <option value="@oItem.Id">@oItem.FullName</option>
+                    }
+                </InputSelect> *@
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>Amount</label>
+            </div>
+            <div class="column">
+                <input id="oAmount" name="oAmount" @bind="oModel.Amount">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>Comments</label>
+            </div>
+            <div class="column">
+                <input id="oComments" name="oComments" @bind="oModel.Comments">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>ExpenseType</label>
+            </div>
+            <div class="column">
+                <input id="oExpenseType" name="oExpenseType" @bind="oModel.ExpenseType">
+                @* <InputSelect @bind-Value="@mExpenseType">
+                    @foreach (var oItem in oList)
+                    {
+                        <option value="@oItem.Id">@oItem.CommonItem</option>
+                    }
+                </InputSelect> *@
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>Is Active</label>
+            </div>
+            <div class="column">
+                <input type="checkbox" id="oIsActive" name="oIsActive" @bind="oModel.IsActive">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>PaidBy</label>
+            </div>
+            <div class="column">
+                @* <InputSelect @bind-Value="@sPaidBy">
+                    @foreach (var oItem in oListIndividuals)
+                    {
+                        <option value="@oItem.Id">@oItem.FullName</option>
+                    }
+                </InputSelect> *@
+                <input id="oPaidBy" name="oPaidBy" @bind="oModel.PaidBy">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>ExpenseDate</label>
+            </div>
+            <div class="column">
+                <input type="datetime-local" id="oExpenseDate" name="oExpenseDate" @bind="oModel.ExpenseDate">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>CreatedBy</label>
+            </div>
+            <div class="column">
+                <label>@oModel.CreatedBy</label>
+@*              <input id="oCreatedBy" name="oCreatedBy" @bind="oModel.CreatedBy"> *@
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>CreatedDate</label>
+            </div>
+            <div class="column">
+                <label>@oModel.CreatedDate</label>
+@*              <input id="oCreatedDate" name="oCreatedDate" @bind="oModel.CreatedDate"> *@
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>ModifiedBy</label>
+            </div>
+            <div class="column">
+                <label>@oModel.ModifiedBy</label>
+@*              <input id="oModifiedBy" name="oModifiedBy" @bind="oModel.ModifiedBy"> *@
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>ModifiedDate</label>
+            </div>
+            <div class="column">
+                <label>@oModel.ModifiedDate</label>
+@*              <input id="oModifiedDate" name="oModifiedDate" @bind="oModel.ModifiedDate"> *@
+            </div>
+        </div>
+
+        <div align="center">
+            <p style="padding:10px;margin-top:20px;clear:both">
+                <button type="submit" @onclick="HandleValidSubmit" class="purplecolor whitecolor buttoneffect">Submit</button>
+            </p>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public int ID { get; set; }
+
+    private HJNKoyil.Models.Expense? oModel;
+    private IList<HJNKoyil.Models.VwCommonMasterDtl> oList;
+
+    private IList<HJNKoyil.Models.vwAppUsers> oListUsers;
+    private IList<HJNKoyil.Models.Individual> oListIndividuals;
+
+    private int mExpenseType;
+    private int sPaidBy;
+    private int sIndividual;
+
+    private string sMessage = "";
+    private string sUserName = "";
+
+
+    private void HandleValidSubmit()
+    {
+        //put your code here
+        sMessage = "";
+        try
+        {
+            oModel.ExpenseType = mExpenseType;
+            oModel.PaidBy = sPaidBy ;
+            oModel.ServiceProviderId = sIndividual;
+
+            if (oModel.PaidBy == null || oModel.Amount == null || oModel.ExpenseType == null)
+                sMessage = "Paid By or Amount Paid or Expense Type cannot be null";
+            else
+            {
+                if (oModel.Id == 0)
+                {
+                    oModel.CreatedBy = sUserName;
+                    oModel.ModifiedBy = sUserName;
+                }
+                else
+                    oModel.ModifiedBy = sUserName;
+                svcExpense.Create(oModel);
+                sMessage = "Saved Successfully";
+            }
+        }
+        catch (Exception ex)
+        {
+            sMessage = ex.Message;
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        //oModel = service
+        sMessage = "";
+        oModel = new Models.Expense();
+
+        // var authState = await oAuth.GetAuthenticationStateAsync();
+        // sUserName = authState.User.Identity?.Name;
+        // oListUsers = svcVwAppUser.GetUsers().ToList();
+        // oList = svcExpenseTypes.List(4).ToList();
+        // oListIndividuals = svcIndividuals.List().ToList();
+
+        // oModel = svcExpense.Details(ID);
+        // if (ID != 0)
+        // {
+        //     mExpenseType = (int)oModel.ExpenseType;
+        //     sIndividual = (int)oModel.ServiceProviderId;
+        //     sPaidBy = (int)oModel.PaidBy;
+        // }
+
+    }
+}

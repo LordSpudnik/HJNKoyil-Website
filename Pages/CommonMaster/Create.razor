@@ -1,0 +1,154 @@
+ @page "/CreateCommonTypes/{ID:int}"
+ @inject Controllers.CommonMasterController svcCommonMaster
+ @inject NavigationManager NavManager
+ @inject AuthenticationStateProvider oAuth
+
+<style>
+    .two-column {
+        display: flex;
+    }
+
+    .column {
+        flex: 0.5;
+        padding: 10px;
+        border: inset;
+    }
+
+    .whitecolor {
+        color: white;
+    }
+
+    .purplecolor {
+        background-color: #DA70D6;
+    }
+
+    .buttoneffect:hover {
+        background: #CF9FFF;
+        box-shadow: 0 0 5px #E0B0FF, 0 0 25px #E0B0FF, 0 0 50px #E0B0FF, 0 0 200px #E0B0FF
+    }
+</style>
+
+
+<div class="two-column">
+    <div class="column">
+        Message:
+    </div>
+    <div class="column">
+        <label>@sMessage</label>
+    </div>
+</div>
+<div>
+    <EditForm Model="@oModel">
+        <div class="two-column">
+            <div class="column">
+                <label>ID </label>
+            </div>
+            <div class="column">
+                <label>@oModel.Id</label>
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>CommonType</label>
+            </div>
+            <div class="column">
+                <input id="oCommonText" name="oCommonText" @bind="oModel.CommonText">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>IsActive</label>
+            </div>
+            <div class="column">
+                <input type="checkbox" id="oIsActive" name="oIsActive" @bind="oModel.IsActive">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>CreatedBy</label>
+            </div>
+            <div class="column">
+                <label>@oModel.CreatedBy</label>
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>CreatedDate</label>
+            </div>
+            <div class="column">
+                <label>@oModel.CreatedDate" </label>
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>ModifiedBy</label>
+            </div>
+            <div class="column">
+                <label>@oModel.ModifiedBy" </label>
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>ModifiedDate</label>
+            </div>
+            <div class="column">
+                <label>@oModel.ModifiedDate</label>
+            </div>
+        </div>
+        <div align="center">
+            <p style="padding:10px;margin-top:20px;clear:both">
+                <button type="submit" @onclick="HandleValidSubmit" class="purplecolor whitecolor buttoneffect">Submit</button>
+            </p>
+        </div>
+    </EditForm>
+</div>
+@code
+{
+    [Parameter]
+    public int ID { get; set; }
+
+    private HJNKoyil.Models.CommonMaster oModel;
+
+    private string sMessage = "";
+    private string sUserName = "";
+
+    private void HandleValidSubmit()
+    {
+        sMessage = "";
+        try
+        {
+            if (oModel.CommonText == null)
+                sMessage = "Common Type cannot be null";
+            else
+            {
+                if (oModel.Id == 0)
+                {
+                    oModel.CreatedBy = sUserName;
+                    oModel.ModifiedBy = sUserName;
+                }
+                else
+                    oModel.ModifiedBy = sUserName;
+
+                svcCommonMaster.Create(oModel);
+                sMessage = "Saved Successfully";
+            }
+        }
+        catch (Exception ex)
+        {
+            sMessage = ex.Message;
+        }
+        //add client side validation
+
+
+        //put your code here
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        sMessage = "";
+        oModel = new Models.CommonMaster();
+        //var authState = await oAuth.GetAuthenticationStateAsync();
+        //sUserName = authState.User.Identity?.Name;
+
+        //oModel = svcCommonMaster.Details(ID);
+    }
+}
