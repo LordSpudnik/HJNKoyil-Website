@@ -5,26 +5,31 @@
 
 <style>
     .two-column {
-        display: flex
+        display: flex;
     }
 
     .column {
         flex: 0.5;
         padding: 10px;
-        border: inset
+        border: inset;
     }
 
     .whitecolor {
-        color: white
+        color: white;
     }
 
     .purplecolor {
-        background-color: #DA70D6
+        background-color: #DA70D6;
     }
 
     .buttoneffect:hover {
         background: #CF9FFF;
         box-shadow: 0 0 5px #E0B0FF, 0 0 25px #E0B0FF, 0 0 50px #E0B0FF, 0 0 200px #E0B0FF
+    }
+
+    .NavButton {
+        color: white;
+        background: #CF9FFF
     }
 </style>
 
@@ -99,6 +104,9 @@
             <p style="padding:10px;margin-top:20px;clear:both">
                 <button type="submit" @onclick="HandleValidSubmit" class="purplecolor whitecolor buttoneffect">Submit</button>
             </p>
+            <p style="padding:10px;margin-top:20px;clear:both">
+                <button type="button" class="NavButton"><a href="/CommonMasterList" style="color: white; text-decoration: none;"> Go Back </a></button>
+            </p>
         </div>
     </EditForm>
 </div>
@@ -146,9 +154,9 @@
     {
         sMessage = "";
         oModel = new Models.CommonMaster();
-        //var authState = await oAuth.GetAuthenticationStateAsync();
-        //sUserName = authState.User.Identity?.Name;
+        // var authState = await oAuth.GetAuthenticationStateAsync();
+        // sUserName = authState.User.Identity?.Name;
 
-        //oModel = svcCommonMaster.Details(ID);
+        // oModel = svcCommonMaster.Details(ID);
     }
 }

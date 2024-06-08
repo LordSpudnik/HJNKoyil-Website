@@ -144,13 +144,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        oModel = new List<Models.VwExpense>();
-
-        // if (pPaidToId != 0)
-        // {
-        //     oModel = svcExpense.ListPaidTo(pPaidToId).ToList();
-        // }
-        // else
-        //     oModel = svcExpense.List().ToList();
+        if (pPaidToId != 0)
+        {
+            oModel = svcExpense.ListPaidTo(pPaidToId).ToList();
+        }
+        else
+            oModel = svcExpense.List().ToList();
     }
 }

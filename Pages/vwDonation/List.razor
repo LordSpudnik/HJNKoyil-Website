@@ -135,13 +135,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        oModel = new List<Models.VwDonation>();
-
-        // if (pDonatedById != 0)
-        // {
-        //     oModel = svcDonation.ListDonatedBy(pDonatedById).ToList();
-        // }
-        // else
-        //     oModel = svcDonation.List().ToList();
+        
+        if (pDonatedById != 0)
+        {
+            oModel = svcDonation.ListDonatedBy(pDonatedById).ToList();
+        }
+        else
+            oModel = svcDonation.List().ToList();
     }
 }

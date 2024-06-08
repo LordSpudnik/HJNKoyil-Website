@@ -111,7 +111,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        oModel = new List<Models.CommonMasterDtl>();
-        //oModel = svcCommonMasterDtl.List(TypeID).ToList();
+        oModel = svcCommonMasterDtl.List(TypeID).ToList();
     }
 }

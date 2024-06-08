@@ -1,40 +1,25 @@
-@page "/DonationList"
-@inject HJNKoyil.Controllers.DonationController svcDonation
+﻿@page "/FileUploadsList"
+@inject HJNKoyil.Controllers.UploadFilesController svcFiles
 @inject NavigationManager oNavManager
 
 <h2> List </h2>
 <p>
-    <button class="nav-item" @onclick="()=>Create(0)">New Customer</button>
+    <button class="nav-item" @onclick="()=>Create(0)">Create</button>
 </p>
-<table>
+<table style="border-block-color:aquamarine">
     <tr>
         <th></th>
         <th>
             Id
         </th>
         <th>
-            DonatedBy
+            File Name
         </th>
         <th>
-            AmountDonated
-        </th>
-        <th>
-            DonationType
-        </th>
-        <th>
-            ReferenceInfo
-        </th>
-        <th>
-            DonatedDate
-        </th>
-        <th>
-            Comments
+            Description
         </th>
         <th>
             IsActive
-        </th>
-        <th>
-            CollectedBy
         </th>
         <th>
             CreatedBy
@@ -56,45 +41,21 @@
         <tr>
             <td>
                 <button @onclick="()=>Create(oItem.Id)">Edit</button>
+@*                 <button @onclick="()=>Details(oItem.Id)">Items</button> *@
             </td>
             <td>
-
                 @oItem.Id
             </td>
             <td>
-
-                @oItem.DonatedBy
+                @oItem.FileName
             </td>
             <td>
-
-                @oItem.AmountDonated
+                @oItem.FileDescription
             </td>
             <td>
-
-                @oItem.DonationType
-            </td>
-            <td>
-
-                @oItem.ReferenceInfo
-            </td>
-            <td>
-
-                @oItem.DonatedDate
-            </td>
-            <td>
-
-                @oItem.Comments
-            </td>
-            <td>
-
                 @oItem.IsActive
             </td>
             <td>
-
-                @oItem.CollectedBy
-            </td>
-            <td>
-
                 @oItem.CreatedBy
             </td>
             <td>
@@ -102,11 +63,9 @@
                 @oItem.CreatedDate
             </td>
             <td>
-
                 @oItem.ModifiedBy
             </td>
             <td>
-
                 @oItem.ModifiedDate
             </td>
         </tr>
@@ -119,20 +78,15 @@
 {
     [Parameter]
     public string ID { get; set; }
-    List<HJNKoyil.Models.Donation> oModel;
-
-
+    List<HJNKoyil.Models.VwFileUpload> oModel;
     private void Create(int vId)
     {
         //put your code here
-        oNavManager.NavigateTo("/CreateDonation/" + vId.ToString());
+        oNavManager.NavigateTo("/CreateFileUpload/" + vId.ToString());
     }
 
     protected override async Task OnInitializedAsync()
     {
-        oModel = new List<Models.Donation>(); 
-        //oModel = svcDonation.List().ToList();
+        oModel = svcFiles.List().ToList();
     }
-
-
 }

@@ -2,7 +2,7 @@
 
 @inject Controllers.DonationController svcDonation
 @inject Controllers.vwCommonMasterDtlController svcDonationTypes
-@* @inject Controllers.vwAppUserController svcVwAppUser *@
+@inject Controllers.vwAppUserController svcVwAppUser
 @inject Controllers.IndividualController svcIndividuals
 
 @inject NavigationManager NavManager
@@ -34,6 +34,11 @@
     .buttoneffect:hover {
         background: #CF9FFF;
         box-shadow: 0 0 5px #E0B0FF, 0 0 25px #E0B0FF, 0 0 50px #E0B0FF, 0 0 200px #E0B0FF
+    }
+
+    .NavButton {
+        color: white;
+        background: #CF9FFF
     }
 </style>
 
@@ -69,7 +74,7 @@
                     }
                 </InputSelect> *@
 
-                <input id="oDonatedBy" name="oDonatedBy" @bind="oModel.DonatedBy">
+                @* <input id="oDonatedBy" name="oDonatedBy" @bind="oModel.DonatedBy"> *@
             </div>
         </div>
         <div class="two-column">
@@ -85,8 +90,8 @@
                 <label>DonationType</label>
             </div>
             <div class="column">
-                
-                <input id="oDonationType" name="oDonationType" @bind="oModel.DonationType">
+
+                @*                 <input id="oDonationType" name="oDonationType" @bind="oModel.DonationType"> *@
 
                 @* <InputSelect @bind-Value="@mDonationType">
                     @foreach (var oItem in oList)
@@ -133,14 +138,14 @@
                 <label>CollectedBy</label>
             </div>
             <div class="column">
-                @* <InputSelect @bind-Value="@sCollectedBy">
-                    @foreach (var oItem in oListIndividuals)
-                    {
-                        <option value="@oItem.Id">@oItem.FullName</option>
-                    }
+                <InputSelect @bind-Value="@sCollectedBy">
+                @* @foreach (var oItem in oListIndividuals)
+                {
+                <option value="@oItem.Id">@oItem.FullName</option>
+                }
                 </InputSelect> *@
 
-                <input id="oCollectedBy" name="oCollectedBy" @bind="oModel.CollectedBy">
+@*                 <input id="oCollectedBy" name="oCollectedBy" @bind="oModel.CollectedBy"> *@
             </div>
         </div>
         <div class="two-column">
@@ -149,7 +154,7 @@
             </div>
             <div class="column">
                 <label>@oModel.CreatedBy</label>
-@*              <input id="oCreatedBy" name="oCreatedBy" @bind="oModel.CreatedBy"> *@
+                @*              <input id="oCreatedBy" name="oCreatedBy" @bind="oModel.CreatedBy"> *@
             </div>
         </div>
         <div class="two-column">
@@ -158,7 +163,7 @@
             </div>
             <div class="column">
                 <label>@oModel.CreatedDate</label>
-@*              <input type="datetime-local" id="oCreatedDate" name="oCreatedDate" @bind="oModel.CreatedDate"> *@
+                @*              <input type="datetime-local" id="oCreatedDate" name="oCreatedDate" @bind="oModel.CreatedDate"> *@
             </div>
         </div>
         <div class="two-column">
@@ -167,7 +172,7 @@
             </div>
             <div class="column">
                 <label>@oModel.ModifiedBy</label>
-@*              <input id="oModifiedBy" name="oModifiedBy" @bind="oModel.ModifiedBy"> *@
+                @*              <input id="oModifiedBy" name="oModifiedBy" @bind="oModel.ModifiedBy"> *@
             </div>
         </div>
         <div class="two-column">
@@ -176,12 +181,15 @@
             </div>
             <div class="column">
                 <label>@oModel.ModifiedDate</label>
-@*              <input type="datetime-local" id="oModifiedDate" name="oModifiedDate" @bind="oModel.ModifiedDate"> *@
+                @*              <input type="datetime-local" id="oModifiedDate" name="oModifiedDate" @bind="oModel.ModifiedDate"> *@
             </div>
         </div>
         <div align="center">
             <p style="padding:10px;margin-top:20px;clear:both">
                 <button type="submit" @onclick="HandleValidSubmit" class="purplecolor whitecolor buttoneffect">Submit</button>
+            </p>
+            <p style="padding:10px;margin-top:20px;clear:both">
+                <button type="button" class="NavButton"><a href="/DonationList" style="color: white; text-decoration: none;"> Go Back </a></button>
             </p>
         </div>
     </EditForm>

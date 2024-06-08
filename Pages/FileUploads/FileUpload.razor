@@ -1,0 +1,47 @@
+﻿@page "/FileUpload/{ID:int}"
+
+@inject HJNKoyil.Controllers.UploadFilesController svcFile
+@inject NavigationManager oNavManager
+
+<h3>FileUpload</h3>
+
+<div>
+@*     OnChange="@HandleFileUpload" *@
+    <InputFile  OnChange="@((InputFileChangeEventArgs args) => HandleFileUpload(args))" />
+</div>
+@if (fileUpload.Id != 0 && fileUpload.FileContent is not null)
+{
+    <img src="data:image/jpg;base64, @Convert.ToBase64String(fileUpload.FileContent)" />
+}
+
+@code 
+{
+    [Parameter]
+    public int ID { get; set; }
+
+    private Models.FileUpload fileUpload = new Models.FileUpload();
+    private long maxFileSize = 1024 * 1024 *15;
+
+    private async Task HandleFileUpload(InputFileChangeEventArgs e)
+    {
+        MemoryStream ms = new MemoryStream();
+        await e.File.OpenReadStream(maxFileSize).CopyToAsync(ms);
+        var fileBytes = ms.ToArray();
+
+
+        fileUpload = svcFile.Details(ID);
+
+        // Save to database
+        fileUpload.FileName = e.File.Name;
+        fileUpload.FileContent = fileBytes;
+        if (fileUpload.FileDescription == "")
+            fileUpload.FileDescription = fileUpload.FileName;
+
+        if (fileUpload.FileDescription == "")
+            fileUpload.FileDescription = fileUpload.FileName;
+
+        svcFile.Create(fileUpload);
+        oNavManager.NavigateTo("/CreateFileUpload/" + ID.ToString());
+    }
+
+}

@@ -136,10 +136,10 @@
             <div class="column">
                 <input id="oIndividualRole" name="oIndividualRole" @bind="oModel.IndividualRole">
                 @* <InputSelect @bind-Value="@mRole">
-                    @foreach (var oItem in oList)
-                    {
-                        <option value="@oItem.Id">@oItem.CommonItem</option>
-                    }
+                @foreach (var oItem in oList)
+                {
+                <option value="@oItem.Id">@oItem.CommonItem</option>
+                }
                 </InputSelect> *@
             </div>
         </div>
@@ -148,15 +148,15 @@
                 <label>ASPNetUserName</label>
             </div>
             <div class="column">
-           @*   <input id="oASPNetUserName" name="oASPNetUserName" @bind="oModel.AspnetUserName"> *@
+                @*   <input id="oASPNetUserName" name="oASPNetUserName" @bind="oModel.AspnetUserName"> *@
                 <label>oModel.AspnetUserName</label>
-    @*          <InputSelect @bind-Value="@sAppUser">
+                @*          <InputSelect @bind-Value="@sAppUser">
                 @foreach (var oItem in oList1)
                 {
-                    <option value="@oItem.Id">@oItem.NormalizedUserName</option>
+                <option value="@oItem.Id">@oItem.NormalizedUserName</option>
                 }
                 </InputSelect>
-     *@
+                *@
             </div>
         </div>
         <div align="center">
@@ -167,6 +167,9 @@
         <div class="space">
             <p style="padding:10px;margin-top:20px;clear:both">
                 <button type="button" class="NavButton"><a href="/DonationList" style="color: white; text-decoration: none;"> Donations </a></button>
+            </p>
+            <p style="padding:10px;margin-top:20px;clear:both">
+                <button type="button" class="NavButton"><a href="/IndividualList" style="color: white; text-decoration: none;"> Go Back </a></button>
             </p>
             <p style="padding:10px;margin-top:20px;clear:both">
                 <button type="button" class="NavButton"><a href="/ExpenseList" style="color: white; text-decoration: none;"> Expenses </a></button>

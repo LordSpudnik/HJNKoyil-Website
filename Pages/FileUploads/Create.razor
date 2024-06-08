@@ -1,0 +1,148 @@
+﻿@page "/CreateFileUpload/{ID:int}"
+
+@inject HJNKoyil.Controllers.UploadFilesController svcFile
+@inject AuthenticationStateProvider oAuth
+@inject NavigationManager NavManager
+
+<style>
+    .NavButton {
+        color: white;
+        background: #CF9FFF
+    }
+</style>
+
+@* <div class="two-column">
+    <div class="column">
+        <label>@sMessage</label>
+    </div>
+</div>
+ *@
+@if (!isSelected)
+{
+    <div>
+        <div class="two-column">
+            <div class="column">
+                <label>ID </label>
+            </div>
+            <div class="column">
+                <label>@fileUpload.Id</label>
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>File Name</label>
+            </div>
+            <div class="column">
+                <input id="oFileName" name="oCommonText" @bind="fileUpload.FileName">
+            </div>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <label>File Description</label>
+            </div>
+            <div class="column">
+                <input id="oDescription" name="oDescription" @bind="fileUpload.FileDescription">
+            </div>
+        </div>
+
+        <div class="two-column">
+            <div class="column">
+                <label>IsActive</label>
+            </div>
+            <div class="column">
+                <input type="checkbox" id="oIsActive" name="oIsActive" @bind="fileUpload.IsActive">
+            </div>
+        </div>
+        <p class="bg-success" style="padding:10px;margin-top:20px;clear:both">
+            <button type="submit" @onclick="HandleValidSubmit" class="btn btn-primary">Submit</button>
+        </p>
+        <p style="padding:10px;margin-top:20px;clear:both">
+            <button type="button" class="NavButton"><a href="/FileUploadsList" style="color: white; text-decoration: none;"> Go Back </a></button>
+        </p>
+
+    </div>
+    <div>
+        <div>
+            <button @onclick="()=>LoadFile(fileUpload.Id)">Upload File</button>
+        </div>
+    </div>
+
+    <div>
+@*         OnChange="@HandleFileUpload" *@
+@*         <InputFile OnChange="@((InputFileChangeEventArgs args) => HandleFileUpload(args))"   maxAllowedSize="15 * 1024 * 1024" /> *@
+    </div>
+
+
+    @if (fileUpload.Id != 0 && fileUpload.FileContent is not null)
+    {
+        <img src="data:image/jpg;base64, @Convert.ToBase64String(fileUpload.FileContent)" />
+    }
+}
+
+@code {
+    [Parameter]
+    public int ID { get; set; }
+    private bool isSelected = false;
+    private Models.FileUpload fileUpload = new Models.FileUpload();
+    private string sMessage = "";
+    private string sUserName = "";
+    private int mId = 0;
+    private string mFileName = "";
+    private string mFileDescription = "";
+    private bool mIsActive = false;
+
+    private void HandleValidSubmit()
+    {
+        if (mId == 0)
+        {
+            fileUpload.CreatedBy = sUserName;
+            fileUpload.ModifiedBy = sUserName;
+        }
+        else
+            fileUpload.ModifiedBy = sUserName;
+        svcFile.Create(fileUpload);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        //oModel = service
+        sMessage = "";
+        var authState = await oAuth.GetAuthenticationStateAsync();
+        sUserName = authState.User.Identity?.Name;
+
+        if (ID != 0)
+        {
+            fileUpload = svcFile.Details(ID);
+            // mId = fileUpload.Id;
+            // mFileName = fileUpload.FileName;
+            // mFileDescription = fileUpload.FileDescription;
+            // mIsActive = Convert.ToBoolean(fileUpload.IsActive);
+        }
+    }
+
+    private async Task HandleFileUpload(InputFileChangeEventArgs e)
+    {
+        MemoryStream ms = new MemoryStream();
+        e.File.OpenReadStream().CopyTo(ms);
+        var fileBytes = ms.ToArray();
+
+        // Save to database
+        fileUpload.FileName = e.File.Name;
+        fileUpload.FileContent = fileBytes;
+        if (fileUpload.FileDescription == "")
+            fileUpload.FileDescription = fileUpload.FileName;
+
+        if (fileUpload.FileDescription == "")
+            fileUpload.FileDescription = fileUpload.FileName;
+
+        svcFile.Create(fileUpload);
+    }
+
+    private void LoadFile(int vId)
+    {
+        //put your code here
+        NavManager.NavigateTo("/FileUpload/" + vId.ToString());
+    }
+
+
+}

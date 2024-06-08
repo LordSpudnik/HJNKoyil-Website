@@ -55,10 +55,10 @@
         <th>
             IndividualRole
         </th>
-@*         <th>
-            ASPNetUserName
+        @*         <th>
+        ASPNetUserName
         </th>
- *@
+        *@
     </tr>
 
     @foreach (var oItem in oModel)
@@ -107,10 +107,11 @@
             <td>
                 @oItem.IndividualRole
             </td>
-@*             <td>
-                @oItem.AspnetUserName.ToString()
-            </td>
- *@        </tr>
+            @*             <td>
+        @oItem.AspnetUserName.ToString()
+        </td>
+        *@
+        </tr>
     }
 </table>
 

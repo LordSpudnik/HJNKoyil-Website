@@ -14,10 +14,10 @@
         padding: 10px;
         border: inset;
     }
+
     .divborder {
-        border:solid;
-        border-color:AppWorkspace;
-    
+        border: solid;
+        border-color: AppWorkspace;
     }
 
     .whitecolor {
@@ -31,6 +31,11 @@
     .buttoneffect:hover {
         background: #CF9FFF;
         box-shadow: 0 0 5px #E0B0FF, 0 0 25px #E0B0FF, 0 0 50px #E0B0FF, 0 0 200px #E0B0FF
+    }
+
+    .NavButton {
+        color: white;
+        background: #CF9FFF
     }
 </style>
 
@@ -59,8 +64,8 @@
                 <label>CommonMasterId</label>
             </div>
             <div class="column">
-                <label>@lstCommonMasters.Where(o=>o.Id==oModel.CommonMasterId).First().CommonText</label>
-@*                 <input id="oCommonMasterId" name="oCommonMasterId" @bind="oModel.CommonMasterId"> *@
+                <label>@lstCommonMasters.Where(o => o.Id == oModel.CommonMasterId).First().CommonText</label>
+                @*                 <input id="oCommonMasterId" name="oCommonMasterId" @bind="oModel.CommonMasterId"> *@
             </div>
         </div>
         <div class="two-column">
@@ -111,9 +116,14 @@
                 <input id="oModifiedDate" name="oModifiedDate" @bind="oModel.ModifiedDate">
             </div>
         </div>
-        <p style="padding:10px;margin-top:20px;clear:both">
-            <button type="submit" @onclick="HandleValidSubmit" class="purplecolor whitecolor buttoneffect">Submit</button>
-        </p>
+        <div align = "center">
+            <p style="padding:10px;margin-top:20px;clear:both">
+                <button type="submit" @onclick="HandleValidSubmit" class="purplecolor whitecolor buttoneffect">Submit</button>
+            </p>
+            <p style="padding:10px;margin-top:20px;clear:both">
+                <button type="button" class="NavButton"><a href="/CommonMasterDtlList" style="color: white; text-decoration: none;"> Go Back </a></button>
+            </p>
+        </div>
     </EditForm>
 </div>
 @code
@@ -161,14 +171,14 @@
         sMessage = "";
         oModel = new Models.CommonMasterDtl();
 
-    //     var authState = await oAuth.GetAuthenticationStateAsync();
-    //     sUserName = authState.User.Identity?.Name;
+            var authState = await oAuth.GetAuthenticationStateAsync();
+            sUserName = authState.User.Identity?.Name;
 
-    //     oModel = svcCommonMasterDtl.Details(ID);
-    //     lstCommonMasters = svcCommonMaster.List().ToList();
-    //     if (oModel.Id ==0)
-    //     {
-    //         oModel.CommonMasterId = TypeID;
-    //     }
+            oModel = svcCommonMasterDtl.Details(ID);
+            lstCommonMasters = svcCommonMaster.List().ToList();
+            if (oModel.Id ==0)
+            {
+                oModel.CommonMasterId = TypeID;
+            }
     }
 }

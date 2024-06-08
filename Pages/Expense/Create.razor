@@ -3,7 +3,7 @@
 @inject Controllers.ExpenseController svcExpense
 
 @inject Controllers.vwCommonMasterDtlController svcExpenseTypes
-@* @inject Controllers.vwAppUserController svcVwAppUser *@
+@inject Controllers.vwAppUserController svcVwAppUser
 @inject Controllers.IndividualController svcIndividuals
 
 @inject NavigationManager NavManager
@@ -36,6 +36,11 @@
         background: #CF9FFF;
         box-shadow: 0 0 5px #E0B0FF, 0 0 25px #E0B0FF, 0 0 50px #E0B0FF, 0 0 200px #E0B0FF
     }
+
+    .NavButton {
+        color: white;
+        background: #CF9FFF
+    }
 </style>
 
 <div class="two-column">
@@ -62,12 +67,12 @@
                 <label>Paid To</label>
             </div>
             <div class="column">
-                <input id="oPaidTo" name="oPaidTo" @bind="oModel.ServiceProviderId">
+@*                 <input id="oPaidTo" name="oPaidTo" @bind="oModel.ServiceProviderId"> *@
                 @* <InputSelect @bind-Value="@sIndividual">
-                    @foreach (var oItem in oListIndividuals)
-                    {
-                        <option value="@oItem.Id">@oItem.FullName</option>
-                    }
+                @foreach (var oItem in oListIndividuals)
+                {
+                <option value="@oItem.Id">@oItem.FullName</option>
+                }
                 </InputSelect> *@
             </div>
         </div>
@@ -94,10 +99,10 @@
             <div class="column">
                 <input id="oExpenseType" name="oExpenseType" @bind="oModel.ExpenseType">
                 @* <InputSelect @bind-Value="@mExpenseType">
-                    @foreach (var oItem in oList)
-                    {
-                        <option value="@oItem.Id">@oItem.CommonItem</option>
-                    }
+                @foreach (var oItem in oList)
+                {
+                <option value="@oItem.Id">@oItem.CommonItem</option>
+                }
                 </InputSelect> *@
             </div>
         </div>
@@ -115,12 +120,12 @@
             </div>
             <div class="column">
                 @* <InputSelect @bind-Value="@sPaidBy">
-                    @foreach (var oItem in oListIndividuals)
-                    {
-                        <option value="@oItem.Id">@oItem.FullName</option>
-                    }
+                @foreach (var oItem in oListIndividuals)
+                {
+                <option value="@oItem.Id">@oItem.FullName</option>
+                }
                 </InputSelect> *@
-                <input id="oPaidBy" name="oPaidBy" @bind="oModel.PaidBy">
+@*                 <input id="oPaidBy" name="oPaidBy" @bind="oModel.PaidBy"> *@
             </div>
         </div>
         <div class="two-column">
@@ -137,7 +142,7 @@
             </div>
             <div class="column">
                 <label>@oModel.CreatedBy</label>
-@*              <input id="oCreatedBy" name="oCreatedBy" @bind="oModel.CreatedBy"> *@
+                @*              <input id="oCreatedBy" name="oCreatedBy" @bind="oModel.CreatedBy"> *@
             </div>
         </div>
         <div class="two-column">
@@ -146,7 +151,7 @@
             </div>
             <div class="column">
                 <label>@oModel.CreatedDate</label>
-@*              <input id="oCreatedDate" name="oCreatedDate" @bind="oModel.CreatedDate"> *@
+                @*              <input id="oCreatedDate" name="oCreatedDate" @bind="oModel.CreatedDate"> *@
             </div>
         </div>
         <div class="two-column">
@@ -155,7 +160,7 @@
             </div>
             <div class="column">
                 <label>@oModel.ModifiedBy</label>
-@*              <input id="oModifiedBy" name="oModifiedBy" @bind="oModel.ModifiedBy"> *@
+                @*              <input id="oModifiedBy" name="oModifiedBy" @bind="oModel.ModifiedBy"> *@
             </div>
         </div>
         <div class="two-column">
@@ -164,13 +169,16 @@
             </div>
             <div class="column">
                 <label>@oModel.ModifiedDate</label>
-@*              <input id="oModifiedDate" name="oModifiedDate" @bind="oModel.ModifiedDate"> *@
+                @*              <input id="oModifiedDate" name="oModifiedDate" @bind="oModel.ModifiedDate"> *@
             </div>
         </div>
 
         <div align="center">
             <p style="padding:10px;margin-top:20px;clear:both">
                 <button type="submit" @onclick="HandleValidSubmit" class="purplecolor whitecolor buttoneffect">Submit</button>
+            </p>
+            <p style="padding:10px;margin-top:20px;clear:both">
+                <button type="button" class="NavButton"><a href="/ExpenseList" style="color: white; text-decoration: none;"> Go Back </a></button>
             </p>
         </div>
     </EditForm>
@@ -201,7 +209,7 @@
         try
         {
             oModel.ExpenseType = mExpenseType;
-            oModel.PaidBy = sPaidBy ;
+            oModel.PaidBy = sPaidBy;
             oModel.ServiceProviderId = sIndividual;
 
             if (oModel.PaidBy == null || oModel.Amount == null || oModel.ExpenseType == null)
