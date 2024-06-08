@@ -154,9 +154,9 @@
     {
         sMessage = "";
         oModel = new Models.CommonMaster();
-        // var authState = await oAuth.GetAuthenticationStateAsync();
-        // sUserName = authState.User.Identity?.Name;
+        var authState = await oAuth.GetAuthenticationStateAsync();
+        sUserName = authState.User.Identity?.Name;
 
-        // oModel = svcCommonMaster.Details(ID);
+        oModel = svcCommonMaster.Details(ID);
     }
 }
