@@ -68,12 +68,12 @@
             </div>
             <div class="column">
 @*                 <input id="oPaidTo" name="oPaidTo" @bind="oModel.ServiceProviderId"> *@
-                <InputSelect @bind-Value="@sIndividual">
+                @* <InputSelect @bind-Value="@sIndividual">
                 @foreach (var oItem in oListIndividuals)
                 {
                 <option value="@oItem.Id">@oItem.FullName</option>
                 }
-                </InputSelect>
+                </InputSelect> *@
             </div>
         </div>
         <div class="two-column">
@@ -98,12 +98,12 @@
             </div>
             <div class="column">
                 <input id="oExpenseType" name="oExpenseType" @bind="oModel.ExpenseType">
-                <InputSelect @bind-Value="@mExpenseType">
+                @* <InputSelect @bind-Value="@mExpenseType">
                 @foreach (var oItem in oList)
                 {
                 <option value="@oItem.Id">@oItem.CommonItem</option>
                 }
-                </InputSelect>
+                </InputSelect> *@
             </div>
         </div>
         <div class="two-column">
@@ -119,12 +119,12 @@
                 <label>PaidBy</label>
             </div>
             <div class="column">
-                <InputSelect @bind-Value="@sPaidBy">
+                @* <InputSelect @bind-Value="@sPaidBy">
                 @foreach (var oItem in oListIndividuals)
                 {
                 <option value="@oItem.Id">@oItem.FullName</option>
                 }
-                </InputSelect>
+                </InputSelect> *@
 @*                 <input id="oPaidBy" name="oPaidBy" @bind="oModel.PaidBy"> *@
             </div>
         </div>
@@ -238,19 +238,19 @@
         sMessage = "";
         oModel = new Models.Expense();
 
-        var authState = await oAuth.GetAuthenticationStateAsync();
-        sUserName = authState.User.Identity?.Name;
-        oListUsers = svcVwAppUser.GetUsers().ToList();
-        oList = svcExpenseTypes.List(4).ToList();
-        oListIndividuals = svcIndividuals.List().ToList();
+        // var authState = await oAuth.GetAuthenticationStateAsync();
+        // sUserName = authState.User.Identity?.Name;
+        // oListUsers = svcVwAppUser.GetUsers().ToList();
+        // oList = svcExpenseTypes.List(4).ToList();
+        // oListIndividuals = svcIndividuals.List().ToList();
 
-        oModel = svcExpense.Details(ID);
-        if (ID != 0)
-        {
-            mExpenseType = (int)oModel.ExpenseType;
-            sIndividual = (int)oModel.ServiceProviderId;
-            sPaidBy = (int)oModel.PaidBy;
-        }
+        // oModel = svcExpense.Details(ID);
+        // if (ID != 0)
+        // {
+        //     mExpenseType = (int)oModel.ExpenseType;
+        //     sIndividual = (int)oModel.ServiceProviderId;
+        //     sPaidBy = (int)oModel.PaidBy;
+        // }
 
     }
 }

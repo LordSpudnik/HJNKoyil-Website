@@ -5,6 +5,23 @@
 @inject NavigationManager oNavManager
 
 <h2> List </h2>
+
+<div class="row searchactionrow">
+    <div class="col-md-6">
+        <div class="input-group">
+            <input type="hidden" name="search_param" value="all" id="search_param">
+            <input type="text" class="form-control" name="x" placeholder="Enter ID..." @bind="searchID">
+            <span class="input-group-btn">
+                <button class="btn btn-default" @onclick='Search' type="button"><span class="fas fa-search"></span>Search ...</button>
+                @*@if (filterOn)
+                {
+                <button type="button" class="btn btn-link" @onclick='ClearFilter'>Clear Filter</button>
+                }*@
+            </span>
+        </div>
+    </div>
+</div>
+
 <p>
     <button class="nav-item" @onclick="()=>Create(0)"> Create  </button>
 </p>
@@ -125,8 +142,17 @@
 {
     [Parameter]
     public int pDonatedById { get; set; }
-
     List<HJNKoyil.Models.VwDonation> oModel;
+
+    private bool sortDirection = false;
+    private int sortIndex = 0;
+    private string spinnerbgImage = "img/spinner.gif";
+    private bool spinning = true;
+    private int searchID = 0;
+    private bool filterOn = false;
+    private int filteredRecordCount = 0;
+    private string searchMessage = "";
+
     private void Create(int vId)
     {
         //put your code here
@@ -135,12 +161,39 @@
 
     protected override async Task OnInitializedAsync()
     {
-        
-        if (pDonatedById != 0)
+
+        oModel = new List<Models.VwDonation>();
+
+        // if (pDonatedById != 0)
+        // {
+        //     oModel = svcDonation.ListDonatedBy(pDonatedById).ToList();
+        // }
+        // else
+        //     oModel = svcDonation.List().ToList();
+    }
+
+    protected async Task Search()
+    {
+        if (searchID == 0)
         {
-            oModel = svcDonation.ListDonatedBy(pDonatedById).ToList();
+            //set search var
+            filterOn = false;
+            filteredRecordCount = 0;
+            searchMessage = "";
         }
         else
-            oModel = svcDonation.List().ToList();
+        {
+            try
+            {
+                oModel = svcDonation.ListDonatedBy(searchID, 1, 20).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Catching Error\n");
+                Console.Write(ex.InnerException);
+                Console.Write(ex.Source);
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

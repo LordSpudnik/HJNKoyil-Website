@@ -135,12 +135,12 @@
             </div>
             <div class="column">
                 <input id="oIndividualRole" name="oIndividualRole" @bind="oModel.IndividualRole">
-                <InputSelect @bind-Value="@mRole">
+                @* <InputSelect @bind-Value="@mRole">
                 @foreach (var oItem in oList)
                 {
                 <option value="@oItem.Id">@oItem.CommonItem</option>
                 }
-                </InputSelect>
+                </InputSelect> *@
             </div>
         </div>
         <div class="two-column">
@@ -219,9 +219,9 @@
         sMessage = "";
         oModel = new Models.Individual();
 
-        oList = svcRole.List(2).ToList();
-        oModel = svcIndividual.Details(ID);
-        if (ID != 0)
-            mRole = (int)oModel.IndividualRole;
+        // oList = svcRole.List(2).ToList();
+        // oModel = svcIndividual.Details(ID);
+        // if (ID != 0)
+        //     mRole = (int)oModel.IndividualRole;
     }
 }

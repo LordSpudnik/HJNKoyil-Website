@@ -6,6 +6,12 @@
     <UserSecretsId>aspnet-HJNKoyil-45a241ea-ba8c-4909-99ab-d9d394944ed7</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Pages\FileUploads\**" />
+    <Content Remove="Pages\FileUploads\**" />
+    <EmbeddedResource Remove="Pages\FileUploads\**" />
+    <None Remove="Pages\FileUploads\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.4" />

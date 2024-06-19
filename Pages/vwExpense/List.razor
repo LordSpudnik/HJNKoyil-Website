@@ -4,6 +4,23 @@
 @inject NavigationManager oNavManager
 
 <h2> List </h2>
+
+<div class="row searchactionrow">
+    <div class="col-md-6">
+        <div class="input-group">
+            <input type="hidden" name="search_param" value="all" id="search_param">
+            <input type="text" class="form-control" name="x" placeholder="Enter Service Provider ID..." @bind="searchID">
+            <span class="input-group-btn">
+                <button class="btn btn-default" @onclick='Search' type="button"><span class="fas fa-search"></span>Search ...</button>
+                @*@if (filterOn)
+                {
+                <button type="button" class="btn btn-link" @onclick='ClearFilter'>Clear Filter</button>
+                }*@
+            </span>
+        </div>
+    </div>
+</div>
+
 <p>
     <button class="nav-item" @onclick="()=>Create(0)"> Create  </button>
 </p>
@@ -134,8 +151,17 @@
 {
     [Parameter]
     public int pPaidToId { get; set; }
-
     List<HJNKoyil.Models.VwExpense> oModel;
+
+    private bool sortDirection = false;
+    private int sortIndex = 0;
+    private string spinnerbgImage = "img/spinner.gif";
+    private bool spinning = true;
+    private int searchID = 0;
+    private bool filterOn = false;
+    private int filteredRecordCount = 0;
+    private string searchMessage = "";
+
     private void Create(int vId)
     {
         //put your code here
@@ -144,11 +170,38 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (pPaidToId != 0)
+        oModel = new List<Models.VwExpense>();
+
+        // if (pPaidToId != 0)
+        // {
+        //     oModel = svcExpense.ListPaidTo(pPaidToId).ToList();
+        // }
+        // else
+        //     oModel = svcExpense.List().ToList();
+    }
+
+    protected async Task Search()
+    {
+        if (searchID == 0)
         {
-            oModel = svcExpense.ListPaidTo(pPaidToId).ToList();
+            //set search var
+            filterOn = false;
+            filteredRecordCount = 0;
+            searchMessage = "";
         }
         else
-            oModel = svcExpense.List().ToList();
+        {
+            try
+            {
+                oModel = svcExpense.ListPaidTo(searchID, 1, 20).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Catching Error\n");
+                Console.Write(ex.InnerException);
+                Console.Write(ex.Source);
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

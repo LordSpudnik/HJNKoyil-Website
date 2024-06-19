@@ -67,12 +67,12 @@
                 <label>Donated By</label>
             </div>
             <div class="column">
-                <InputSelect @bind-Value="@sIndividual">
+                @* <InputSelect @bind-Value="@sIndividual">
                     @foreach (var oItem in oListIndividuals)
                     {
                         <option value="@oItem.Id">@oItem.FullName</option>
                     }
-                </InputSelect>
+                </InputSelect> *@
 
                 @* <input id="oDonatedBy" name="oDonatedBy" @bind="oModel.DonatedBy"> *@
             </div>
@@ -93,12 +93,12 @@
 
                 @*                 <input id="oDonationType" name="oDonationType" @bind="oModel.DonationType"> *@
 
-                <InputSelect @bind-Value="@mDonationType">
+                @* <InputSelect @bind-Value="@mDonationType">
                     @foreach (var oItem in oList)
                     {
                         <option value="@oItem.Id">@oItem.CommonItem</option>
                     }
-                </InputSelect>
+                </InputSelect> *@
             </div>
         </div>
         <div class="two-column">
@@ -138,12 +138,12 @@
                 <label>CollectedBy</label>
             </div>
             <div class="column">
-                <InputSelect @bind-Value="@sCollectedBy">
+                @* <InputSelect @bind-Value="@sCollectedBy">
                 @foreach (var oItem in oListIndividuals)
                 {
                 <option value="@oItem.Id">@oItem.FullName</option>
                 }
-                </InputSelect>
+                </InputSelect> *@
 
 @*                 <input id="oCollectedBy" name="oCollectedBy" @bind="oModel.CollectedBy"> *@
             </div>
@@ -247,19 +247,19 @@
         sMessage = "";
         oModel = new Models.Donation();
 
-        var authState = await oAuth.GetAuthenticationStateAsync();
-        sUserName = authState.User.Identity?.Name;
-        oListUsers = svcVwAppUser.GetUsers().ToList();
-        oList = svcDonationTypes.List(3).ToList();
-        oListIndividuals = svcIndividuals.List().ToList();
+        // var authState = await oAuth.GetAuthenticationStateAsync();
+        // sUserName = authState.User.Identity?.Name;
+        // oListUsers = svcVwAppUser.GetUsers().ToList();
+        // oList = svcDonationTypes.List(3).ToList();
+        // oListIndividuals = svcIndividuals.List().ToList();
 
-        oModel = svcDonation.Details(ID);
-        if (ID != 0)
-        {
-            mDonationType = (int)oModel.DonationType;
-            sIndividual = (int)oModel.DonatedBy;
-            sCollectedBy = (int)oModel.CollectedBy;
-        }
+        // oModel = svcDonation.Details(ID);
+        // if (ID != 0)
+        // {
+        //     mDonationType = (int)oModel.DonationType;
+        //     sIndividual = (int)oModel.DonatedBy;
+        //     sCollectedBy = (int)oModel.CollectedBy;
+        // }
 
     }
 }
