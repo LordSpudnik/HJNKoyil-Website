@@ -1,0 +1,238 @@
+@page "/vwReport"
+
+@inject HJNKoyil.Controllers.vwDonationController svcDonation
+@inject HJNKoyil.Controllers.vwExpenseController svcExpense
+@attribute [Authorize]
+@inject NavigationManager oNavManager
+
+<div class="two-column">
+    <div class="column">
+        <label>Month</label>
+    </div>
+    <div class="column">
+        <InputSelect @bind-Value="@nMonth">
+            <option value="0">Select</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </InputSelect>
+    </div>
+</div>
+<div class="two-column">
+    <div class="column">
+        <label>Year</label>
+    </div>
+    <div class="column">
+        <input id="nYear" class="form-control" type="text" name="nYear" @bind="nYear">
+    </div>
+</div>
+<div class="column">
+    <span class="input-group-btn">
+        <button class="btn btn-default" @onclick='Search' type="button" style="border: 2px solid grey; background-color: lightgrey;">
+            <span class="fas fa-search"></span><b>Search</b>
+        </button>
+    </span>
+</div>
+
+<h2>Report for the Month of @nMonth, @nYear  </h2>
+
+<div>List of Donations for the Month of @nMonth, @nYear</div>
+<table>
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            Donated By Name
+        </th>
+        <th>
+            DonationTypeDesc
+        </th>
+        <th>
+            AmountDonated
+        </th>
+        <th>
+            ReferenceInfo
+        </th>
+        <th>
+            DonatedDate
+        </th>
+        <th>
+            Comments
+        </th>
+        <th>
+            IsActive
+        </th>
+        <th>
+            CollectedByName
+        </th>
+    </tr>
+
+    @foreach (var oItem in oModel)
+    {
+        <tr>
+            <td>
+                @oItem.Id
+            </td>
+            <td>
+                @oItem.DonatedByName
+            </td>
+            <td>
+                @oItem.DonationTypeDesc
+            </td>
+            <td>
+                @oItem.AmountDonated
+            </td>
+            <td>
+                @oItem.ReferenceInfo
+            </td>
+            <td>
+                @oItem.DonatedDate
+            </td>
+            <td>
+                @oItem.Comments
+            </td>
+            <td>
+                @oItem.IsActive
+            </td>
+            <td>
+                @oItem.CollectedByName
+            </td>
+        </tr>
+    }
+</table>
+<div>List of Expenses for the Month of  @nMonth, @nYear</div>
+<table>
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            ServiceProvider
+        </th>
+        <th>
+            Amount
+        </th>
+        <th>
+            Comments
+        </th>
+        <th>
+            IsActive
+        </th>
+        <th>
+            ExpenseTypeDesc
+        </th>
+        <th>
+            PaidBy
+        </th>
+        <th>
+            PaidByName
+        </th>
+        <th>
+            ExpenseDate
+        </th>
+    </tr>
+
+    @foreach (var oItem in oModel1)
+    {
+        <tr>
+            <td>
+                @oItem.Id
+            </td>
+            <td>
+                @oItem.ServiceProvider
+            </td>
+
+            <td>
+                @oItem.Amount
+            </td>
+            <td>
+                @oItem.Comments
+            </td>
+            <td>
+                @oItem.IsActive
+            </td>
+            <td>
+                @oItem.ExpenseTypeDesc
+            </td>
+            <td>
+                @oItem.PaidBy
+            </td>
+            <td>
+                @oItem.PaidByName
+            </td>
+            <td>
+                @oItem.ExpenseDate
+            </td>
+        </tr>
+    }
+</table>
+
+
+
+@code
+{
+    [Parameter]
+    public int pDonatedById { get; set; }
+
+    private int nMonth = 0;
+    private int nYear = 0;
+    List<HJNKoyil.Models.VwDonation> oModel;
+    List<HJNKoyil.Models.VwExpense> oModel1;
+
+    private string searchTerm = "";
+    private bool filterOn = false;
+    private int filteredRecordCount = 0;
+    private string searchMessage = "";
+
+    private void Create(int vId)
+    {
+        //put your code here
+        oNavManager.NavigateTo("/CreateDonation/" + vId.ToString());
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        nMonth = DateTime.Today.Month;
+        nYear = DateTime.Today.Year;
+
+        oModel = svcDonation.ListForMonthYear(nMonth, nYear).OrderBy(o => o.Id).ToList();
+        oModel1 = svcExpense.ListPaidInMonthYear(nMonth, nYear).OrderBy(o => o.Id).ToList();
+    }
+    protected async Task Search()
+    {
+        if (nMonth == 0 || nYear < 2019)
+        {
+            //set search var
+            filterOn = false;
+            filteredRecordCount = 0;
+            searchMessage = "";
+        }
+        else
+        {
+            try
+            {
+                oModel = svcDonation.ListForMonthYear(nMonth, nYear).OrderBy(o => o.Id).ToList();
+                oModel1 = svcExpense.ListPaidInMonthYear(nMonth, nYear).OrderBy(o => o.Id).ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Catching Error\n");
+                Console.Write(ex.InnerException);
+                Console.Write(ex.Source);
+                Console.WriteLine(ex.Message);
+            }
+        }
+    }
+
+    }
