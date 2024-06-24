@@ -7,9 +7,11 @@
     <div class="col-md-6">
         <div class="input-group">
             <input type="hidden" name="search_param" value="all" id="search_param">
-            <input type="text" class="form-control" name="x" placeholder="Search term..." @bind="searchTerm">
+            <input type="text" class="form-control" name="x" placeholder="Search Individuals" @bind="searchTerm">
             <span class="input-group-btn">
-                <button class="btn btn-default" @onclick='Search' type="button"><span class="fas fa-search"></span>Search ...</button>
+                <button class="btn btn-default" @onclick='Search' type="button" style="border: 2px solid grey; background-color: lightgrey;">
+                    <span class="fas fa-search"></span><b>Search</b>
+                </button>
                 @*@if (filterOn)
                 {
                 <button type="button" class="btn btn-link" @onclick='ClearFilter'>Clear Filter</button>
