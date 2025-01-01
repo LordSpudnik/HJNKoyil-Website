@@ -1,1 +1,1 @@
-[The Wesbite](https://hjnkoyil20240607233557.azurewebsites.net/)
+[Website](https://hjnkoyil20240607233557.azurewebsites.net/)
